@@ -25,20 +25,18 @@ class VectorStore:
             metadatas=metadatas)
         
 
-    def query(self , question, n_result = 5 ):
-        result = self.collection.query(
-            query_texts=[question],
-            n_results= n_result
-        )
-
-        ids = result['ids'][0]
+    def query(self, question, n_results:int = 5, conditions : list = None , logic : str = "$and"):
+        kwargs = {"query_texts": [question], "n_results": n_results}
+        if conditions:
+            kwargs["where"] = {logic : conditions}
+        result = self.collection.query(**kwargs)
+        ids       = result['ids'][0]
         documents = result['documents'][0]
         distances = result['distances'][0]
-        metadatas = result["metadatas"][0]
-
-        return list(zip(ids, documents , distances , metadatas))
+        metadatas = result['metadatas'][0]
+        return list(zip(ids, documents, distances, metadatas))
     
 
-    def filter(self , conditions : list  ,logic : str = "$and" , ):
+    def filter(self , conditions : list  ,logic : str = "$and" ):
         result = self.collection.get( where= {logic : conditions})
         return result
