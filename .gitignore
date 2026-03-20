@@ -1,0 +1,11 @@
+__pycache__/
+.ipynb_checkpoints/
+chromadb/
+logs/
+.env
+
+Extracts/
+notebook/
+
+
+EXTRACT_REFERENCE.md
